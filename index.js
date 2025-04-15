@@ -1,9 +1,18 @@
-import  {searchItems} from "/job/work/utils/listCodes.js";
+// import {searchItems} from "/job/work/utils/listCodes.js";
 const { expect } = require('@playwright/test');
-const { chromium } = require('playwright');
+const { firefox } = require('playwright');
+
+const searchItems = [
+    ['РЗН 2021/14393', 'daaad'],
+    ['РЗН 2016/4721', 'baaab'],
+    ['РЗН 2016/5001', 'dsvdsv'],
+    ['РЗН 2016/5073', 'vfdgd'],
+    ['РЗН 2016/5073', 'ggggg'],
+    ['РЗН 2016/5073', 'dsdsdf'],
+];
 
 (async () => {
-    const browser = await chromium.launch({ headless: false });
+    const browser = await firefox.launch({ headless: false });
     const page = await browser.newPage();
     
     await page.goto('https://roszdravnadzor.gov.ru/services/misearch');
@@ -33,28 +42,28 @@ const { chromium } = require('playwright');
             const newitem = item[0].replace(/\//g, '-');
             const newitem1 = item[1];
             // не забыть поместить до парсера
-            await download.saveAs(`//FileServer/Shara/Work/Прайсы/Прайсы индивидуальные/Сухих Никита Анатольевич/Парсер/${newitem1}/РУ/${newitem}/` + download.suggestedFilename());
+            await download.saveAs(`/FileServer/Shara/Work/Прайсы/Прайсы индивидуальные/Сухих Никита Анатольевич/Парсер/${newitem1}/РУ/${newitem}/` + download.suggestedFilename());
             await page.waitForTimeout(randomTimeout);
 
             // Скачивание выписки
             const extracts = page.waitForEvent('download');
             await page.getByTitle('Скачать выписку').click();
             const download_1 = await extracts;
-            await download_1.saveAs(`//FileServer/Shara/Work/Прайсы/Прайсы индивидуальные/Сухих Никита Анатольевич/Парсер/${newitem1}/Выписки/${newitem}/` + download_1.suggestedFilename());
+            await download_1.saveAs(`/FileServer/Shara/Work/Прайсы/Прайсы индивидуальные/Сухих Никита Анатольевич/Парсер/${newitem1}/Выписки/${newitem}/` + download_1.suggestedFilename());
             await page.waitForTimeout(randomTimeout);
 
             // Скачивание инструкции
             const passport = page.waitForEvent('download');
             await page.getByText('[Скачать Инструкцию]').click();
             const download_2 = await passport;
-            await download_2.saveAs(`//FileServer/Shara/Work/Прайсы/Прайсы индивидуальные/Сухих Никита Анатольевич/Парсер/${newitem1}/Паспорт/${newitem}/` + download_2.suggestedFilename());
+            await download_2.saveAs(`/FileServer/Shara/Work/Прайсы/Прайсы индивидуальные/Сухих Никита Анатольевич/Парсер/${newitem1}/Паспорт/${newitem}/` + download_2.suggestedFilename());
             await page.waitForTimeout(randomTimeout);
 
             // Скачивание фото
             const flash = page.waitForEvent('download');
             await page.getByText('[Скачать Фото]').click();
             const download_3 = await flash;
-            await download_3.saveAs(`//FileServer/Shara/Work/Прайсы/Прайсы индивидуальные/Сухих Никита Анатольевич/Парсер/${newitem1}/Фото/${newitem}/` + download_3.suggestedFilename());
+            await download_3.saveAs(`/FileServer/Shara/Work/Прайсы/Прайсы индивидуальные/Сухих Никита Анатольевич/Парсер/${newitem1}/Фото/${newitem}/` + download_3.suggestedFilename());
             await page.waitForTimeout(randomTimeout);
 
             // Возврат на страницу поиска для следующей итерации
@@ -70,7 +79,5 @@ const { chromium } = require('playwright');
     // Закрытие браузера
     await browser.close();
 })();
-// Рандомайзер сделано
-// чтобы меня / на -  cделано
-// чтобы сохранял на сеть сделано
-// сохранял В разных производителей
+// Поменять местами newitem с папками скачивания 
+// придумать то нибудь с item
