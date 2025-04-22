@@ -1,6 +1,6 @@
 // import {searchItems} from "/job/work/utils/listCodes.js";
 const { expect } = require('@playwright/test');
-const { chromium } = require('playwright');
+const { firefox } = require('playwright');
 
 const searchItems = [
 ['ФСР 2010/07091','АНО Катаржина'],
@@ -823,7 +823,7 @@ const searchItems = [
 ];
 
 (async () => {
-    const browser = await chromium.launch({ headless: false });
+    const browser = await firefox.launch({ headless: true });
     const page = await browser.newPage();
     
     await page.goto('https://roszdravnadzor.gov.ru/services/misearch');
@@ -847,34 +847,38 @@ const searchItems = [
             // Замена, меняет / на -
             const newitem = item[0].replace(/\//g, '-');
             const newitem1 = item[1];
+            await page.waitForTimeout(randomTimeout);
 
             // Скачивание РУ
-            if (await page.getByText('[Скачать РУ]').isVisible()) {
-                const downloadPromise = page.waitForEvent('download');
-                // await page.getByRole('.table-item-extend-main',{ name:`${item[0]}`}).check(); это позже
-                await page.getByText('[Скачать РУ]').click();
-                const download = await downloadPromise;
-                console.log('Файл скачан', download.saveAs(`/FileServer/Shara/Work/Прайсы/Производители/${newitem1}/Парсер/${newitem}/РУ/` + download.suggestedFilename()));
-            };
-            console.log('Пропуск');
+            if (await page.getByText('[Скачать РУ]').isVisible()) { 
+            const first = page.waitForEvent('download');
+            console.log('Похуй');
+            await page.getByText('[Скачать РУ]').click();
+            const download = await first;
+            console.log('Файл скачан:', download.saveAs(`//FileServer/Shara/Work/Прайсы/Производители_2/${newitem1}/Парсер/${newitem}/РУ/` + download.suggestedFilename()));
             await page.waitForTimeout(randomTimeout);
+            }; 
+            console.log('Пропусти пж');
+
 
             // Скачивание выписки
             if (await page.getByTitle('Скачать выписку').isVisible()) {
                 const extracts = page.waitForEvent('download');
+                console.log('Похуй');
                 await page.getByTitle('Скачать выписку').click();
                 const download_1 = await extracts;
-                console.log('Файл скачан:', download_1.saveAs(`/FileServer/Shara/Work/Прайсы/Производители/${newitem1}/Парсер/${newitem}/Выписки/` + download_1.suggestedFilename()));
+                console.log('Файл скачан:', download_1.saveAs(`//FileServer/Shara/Work/Прайсы/Производители_2/${newitem1}/Парсер/${newitem}/Выписки/` + download_1.suggestedFilename()));
             };
-            console.log('Пропуск')
+            console.log('Пропуск');
             await page.waitForTimeout(randomTimeout);
 
              // Скачивание инструкцию
             if (await page.getByText('[Скачать Инструкцию]').isVisible()) {
                 const passport = page.waitForEvent('download');
+                console.log('Похуй');
                 await page.getByText('[Скачать Инструкцию]').click();
                 const download_2 = await passport;
-                console.log('Файл скачан:', download_2.saveAs(`/FileServer/Shara/Work/Прайсы/Производители/${newitem1}/Парсер/${newitem}/Паспорт/` + download_2.suggestedFilename()));   
+                console.log('Файл скачан:', download_2.saveAs(`//FileServer/Shara/Work/Прайсы/Производители_2/${newitem1}/Парсер/${newitem}/Паспорт/` + download_2.suggestedFilename()));   
             };
             console.log('Пропуск');
             await page.waitForTimeout(randomTimeout);
@@ -882,9 +886,10 @@ const searchItems = [
              // Скачивание фото
             if (await page.getByText('[Скачать фото]').isVisible()) {
                 const flash = page.waitForEvent('download');
+                console.log('Похуй');
                 await page.getByText('[Скачать Фото]').click();
                 const download_3 = await flash;
-                console.log('Файл скачан:', download_3.saveAs(`/FileServer/Shara/Work/Прайсы/Производители/${newitem1}/Парсер/${newitem}/Фото/` + download_3.suggestedFilename()));   
+                console.log('Файл скачан:', download_3.saveAs(`//FileServer/Shara/Work/Прайсы/Производители_2/${newitem1}/Парсер/${newitem}/Фото/` + download_3.suggestedFilename()));   
             };
             console.log('Пропуск');
             await page.waitForTimeout(randomTimeout);
@@ -897,7 +902,7 @@ const searchItems = [
             console.error(`Ошибка при обработке ${item}:`, error);
             // В случае ошибки продолжаем со следующим элементом
             await page.goto('https://roszdravnadzor.gov.ru/services/misearch');
-        };
+            };
     };
     // Закрытие браузера
     await browser.close();
