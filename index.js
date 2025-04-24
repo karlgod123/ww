@@ -899,7 +899,8 @@ const searchItems = [
             console.log('Похуй');
             await page.getByText('[Скачать РУ]').click();
             const download = await first;
-            console.log('Файл скачан:', download.saveAs(`//FileServer/Shara/Work/Прайсы/Производители_2/${newitem1}/Парсер/${newitem}/РУ/` + download.suggestedFilename()));
+            console.log(`Файл скачан: ${newitem}`); 
+            download.saveAs(`//FileServer/Shara/Work/Прайсы/Производители_2/${newitem1}/Парсер/${newitem}/РУ/` + download.suggestedFilename());
         } else {
             console.log('Элемент [Скачать РУ] не найден, пропускаем.');
         }
@@ -915,7 +916,8 @@ const searchItems = [
             console.log('Похуй');
             await page.getByTitle('Скачать выписку').click();
             const download_1 = await extracts;
-            console.log('Файл скачан:', download_1.saveAs(`//FileServer/Shara/Work/Прайсы/Производители_2/${newitem1}/Парсер/${newitem}/Выписки/` + download_1.suggestedFilename()));
+            console.log(`Файл скачан: ${newitem}`);
+            download_1.saveAs(`//FileServer/Shara/Work/Прайсы/Производители_2/${newitem1}/Парсер/${newitem}/Выписки/` + download_1.suggestedFilename());
         } else {
             console.log('Элемент [Скачать выписку] не найден, пропускаем.');
         }
@@ -933,7 +935,8 @@ const searchItems = [
             
             await page.getByText('[Скачать Инструкцию]').click({ timeout: 120000 });
             const download_2 = await passport;
-            console.log('Файл скачан:', download_2.saveAs(`//FileServer/Shara/Work/Прайсы/Производители_2/${newitem1}/Парсер/${newitem}/Паспорт/` + download_2.suggestedFilename()));   
+            console.log(`Файл скачан: ${newitem}`); 
+            download_2.saveAs(`//FileServer/Shara/Work/Прайсы/Производители_2/${newitem1}/Парсер/${newitem}/Паспорт/` + download_2.suggestedFilename());   
         } else {
             console.log('Элемент [Скачать Инструкцию] не найден, пропускаем.');
         }
