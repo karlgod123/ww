@@ -73,35 +73,35 @@ const searchItems = [
     // ['ФСР 2009/05742','АО ЕПЗ'],
     // ['РЗН 2024/23468','АО ЕПЗ'],
     // ['РЗН 2022/16353','АО ЕПЗ'],
-    ['РЗН 2019/9080','АО ЕПЗ'],
-    ['РЗН 2024/24216','АО ЕПЗ'],
-    ['РЗН 2019/8597','АО ЕПЗ'],
-    ['РЗН 2022/16548','АО ЕПЗ'],
-    ['РЗН 2019/9071','АО ЕПЗ'],
-    ['РЗН 2016/4206','АО ЕПЗ'],
-    ['ФСР 2011/11992','АО ЕПЗ'],
-    ['ФСР 2008/02298','АО ЕПЗ'],
-    ['ФСР 2011/10892','АО ЕПЗ'],
-    ['РЗН 2022/16708','АО ЕПЗ'],
-    ['ФСР 2011/11460','АО ЗЛАТМАШ'],
-    ['РЗН 2017/6053','АО КАМПО'],
-    ['РЗН 2013/749','АО КОНМЕТ ХОЛДИНГ'],
-    ['ФСР 2010/07955','АО КОНМЕТ ХОЛДИНГ'],
-    ['ФСР 2010/07956','АО КОНМЕТ ХОЛДИНГ'],
-    ['ФСР 2010/07810','АО КОНМЕТ ХОЛДИНГ'],
-    ['ФСР 2010/07809','АО КОНМЕТ ХОЛДИНГ'],
-    ['ФСР 2011/12496','АО КОНМЕТ ХОЛДИНГ'],
-    ['РЗН 2013/752','АО КОНМЕТ ХОЛДИНГ'],
-    ['ФСР 2010/09611','АО КОНМЕТ ХОЛДИНГ'],
-    ['ФСР 2008/03613','АО КОНМЕТ ХОЛДИНГ'],
-    ['ФСР 2010/08662','АО КОНМЕТ ХОЛДИНГ'],
-    ['ФСР 2010/09610','АО КОНМЕТ ХОЛДИНГ'],
-    ['РЗН 2013/815','АО КОНМЕТ ХОЛДИНГ'],
-    ['ФСР 2008/02959','АО КРОНТ-М'],
-    ['ФСР 2011/10034','АО КРОНТ-М'],
-    ['ФСР 2011/09963','АО КРОНТ-М'],
-    ['ФСР 2011/11847','АО КРОНТ-М'],
-    ['РЗН 2017/5690','АО КРОНТ-М'],
+    // ['РЗН 2019/9080','АО ЕПЗ'],
+    // ['РЗН 2024/24216','АО ЕПЗ'],
+    // ['РЗН 2019/8597','АО ЕПЗ'],
+    // ['РЗН 2022/16548','АО ЕПЗ'],
+    // ['РЗН 2019/9071','АО ЕПЗ'],
+    // ['РЗН 2016/4206','АО ЕПЗ'],
+    // ['ФСР 2011/11992','АО ЕПЗ'],
+    // ['ФСР 2008/02298','АО ЕПЗ'],
+    // ['ФСР 2011/10892','АО ЕПЗ'],
+    // ['РЗН 2022/16708','АО ЕПЗ'],
+    // ['ФСР 2011/11460','АО ЗЛАТМАШ'],
+    // ['РЗН 2017/6053','АО КАМПО'],
+    // ['РЗН 2013/749','АО КОНМЕТ ХОЛДИНГ'],
+    // ['ФСР 2010/07955','АО КОНМЕТ ХОЛДИНГ'],
+    // ['ФСР 2010/07956','АО КОНМЕТ ХОЛДИНГ'],
+    // ['ФСР 2010/07810','АО КОНМЕТ ХОЛДИНГ'],
+    // ['ФСР 2010/07809','АО КОНМЕТ ХОЛДИНГ'],
+    // ['ФСР 2011/12496','АО КОНМЕТ ХОЛДИНГ'],
+    // ['РЗН 2013/752','АО КОНМЕТ ХОЛДИНГ'],
+    // ['ФСР 2010/09611','АО КОНМЕТ ХОЛДИНГ'],
+    // ['ФСР 2008/03613','АО КОНМЕТ ХОЛДИНГ'],
+    // ['ФСР 2010/08662','АО КОНМЕТ ХОЛДИНГ'],
+    // ['ФСР 2010/09610','АО КОНМЕТ ХОЛДИНГ'],
+    // ['РЗН 2013/815','АО КОНМЕТ ХОЛДИНГ'],
+    // ['ФСР 2008/02959','АО КРОНТ-М'],
+    // ['ФСР 2011/10034','АО КРОНТ-М'],
+    // ['ФСР 2011/09963','АО КРОНТ-М'],
+    // ['ФСР 2011/11847','АО КРОНТ-М'],
+    // ['РЗН 2017/5690','АО КРОНТ-М'],
     ['ФСР 2011/12345','АО КРОНТ-М'],
     ['ФСР 2011/12344','АО КРОНТ-М'],
     ['РЗН 2023/21376','АО КРОНТ-М'],
@@ -876,102 +876,103 @@ const searchItems = [
             console.log(`Обрабатываю: ${item}`);
             
             // Поиск
-            await page.fill('#id_q_mi_label_application', '');
             await page.fill('#id_q_mi_label_application', item[0]);
             await page.press('#id_q_mi_label_application', 'Enter');
             await page.waitForTimeout(3020);
 
-            
             // Проверка видимости элемента
-            await expect(page.getByText(item[0])).toBeVisible();
-            await page.click('.data-fancybox'); 
-        
-            // Рандомахер
-            const randomTimeout = Math.floor(Math.random() * (10000 - 1000 + 1)) + 2000;
-            // Замена, меняет / на -
+            if (await page.getByText(item[0]).isVisible()) {
+                await page.click('.data-fancybox'); 
+            } else {
+                console.log(`Элемент ${item[0]} не найден, пропускаем.`);
+                continue; // Пропускаем итерацию
+            }
+
+            // Рандомное время ожидания
+            const randomTimeout = Math.floor(Math.random() * (10000 - 1000 + 1)) + 3000;
             const newitem = item[0].replace(/\//g, '-');
             const newitem1 = item[1];
             await page.waitForTimeout(randomTimeout);          
+
             // Скачивание РУ
-    try {
-        if (await page.getByText('скачать РУ').isVisible()) { 
-            const first = page.waitForEvent('download');
-            console.log('Похуй');
-            await page.getByText('[Скачать РУ]').click();
-            const download = await first;
-            console.log(`Файл скачан: ${newitem}`); 
-            download.saveAs(`//FileServer/Shara/Work/Прайсы/Производители_2/${newitem1}/Парсер/${newitem}/РУ/` + download.suggestedFilename());
-        } else {
-            console.log('Элемент [Скачать РУ] не найден, пропускаем.');
-        }
-    } catch (error) {
-        console.error('Ошибка при скачивании РУ:', error);
-    }
-    await page.waitForTimeout(randomTimeout);
+            try {
+                if (await page.getByText('скачать РУ').isVisible()) { 
+                    const downloadEvent = page.waitForEvent('download');
+                    await page.getByText('[Скачать РУ]').click();
+                    const download = await downloadEvent;
+                    console.log(`Файл скачан: РУ ${newitem}`); 
+                    await download.saveAs(`//FileServer/Shara/Work/Прайсы/Производители_2/${newitem1}/Парсер/${newitem}/РУ/` + download.suggestedFilename());
+                } else {
+                    console.log('Элемент [Скачать РУ] не найден, пропускаем.');
+                }
+            } catch (error) {
+                console.error('Ошибка при скачивании РУ:', error);
+            }
 
-    // Скачивание выписки
-    try {
-        if (await page.getByTitle('Скачать выписку').isVisible()) {
-            const extracts = page.waitForEvent('download');
-            console.log('Похуй');
-            await page.getByTitle('Скачать выписку').click();
-            const download_1 = await extracts;
-            console.log(`Файл скачан: ${newitem}`);
-            download_1.saveAs(`//FileServer/Shara/Work/Прайсы/Производители_2/${newitem1}/Парсер/${newitem}/Выписки/` + download_1.suggestedFilename());
-        } else {
-            console.log('Элемент [Скачать выписку] не найден, пропускаем.');
-        }
-    } catch (error) {
-        console.error('Ошибка при скачивании выписки:', error);
-    }
-    await page.waitForTimeout(randomTimeout);
+            await page.waitForTimeout(randomTimeout);
 
-    // Скачивание инструкции
-    try {
-        page.setDefaultTimeout(120000);
-        if (await page.getByTitle('скачать Инструкцию').isVisible()) {
-            const passport = page.waitForEvent('download');
-            console.log('Похуй');
-            
-            await page.getByText('[Скачать Инструкцию]').click({ timeout: 120000 });
-            const download_2 = await passport;
-            console.log(`Файл скачан: ${newitem}`); 
-            download_2.saveAs(`//FileServer/Shara/Work/Прайсы/Производители_2/${newitem1}/Парсер/${newitem}/Паспорт/` + download_2.suggestedFilename());   
-        } else {
-            console.log('Элемент [Скачать Инструкцию] не найден, пропускаем.');
-        }
-    } catch (error) {
-        console.error('Ошибка при скачивании инструкции:', error);
-    }
-    await page.waitForTimeout(randomTimeout);
+            // Скачивание выписки
+            try {
+                if (await page.getByTitle('Скачать выписку').isVisible()) {
+                    const downloadEvent = page.waitForEvent('download');
+                    await page.getByTitle('Скачать выписку').click();
+                    const download_1 = await downloadEvent;
+                    console.log('Файл скачан:', download_1.suggestedFilename());
+                    await download_1.saveAs(`//FileServer/Shara/Work/Прайсы/Производители_2/${newitem1}/Парсер/${newitem}/Выписки/` + download_1.suggestedFilename());
+                } else {
+                    console.log('Элемент [Скачать выписку] не найден, пропускаем.');
+                }
+            } catch (error) {
+                console.error('Ошибка при скачивании выписки:', error);
+            }
 
-    // // Скачивание фото
-    // try {
-        
-    //     if (await expect(page.getByTitle('скачать Фото')).toHaveText('[Скачать Фото]')) {
-    //         const flash = page.waitForEvent('download');
-    //         console.log('Похуй');
-    //         await page.getByTestId('[Скачать Фото]').click({ timeout: 120000});
-    //         const download_3 = await flash;
-    //         console.log('Файл скачан:', download_3.saveAs(`//FileServer/Shara/Work/Прайсы/Производители_2/${newitem1}/Парсер/${newitem}/Фото/` + download_3.suggestedFilename()));   
-    //     } else {
-    //         console.log('Элемент [Скачать Фото] не найден, пропускаем.');
-    //     }
-    // } catch (error) {
-    //     console.error('Ошибка при скачивании фото:', error);
-    // }
-    // await page.waitForTimeout(randomTimeout);
-        
-        
+            await page.waitForTimeout(randomTimeout);
+
+            // Скачивание фото
+            try {
+                if (await page.getByText('скачать Фото').isVisible()) {
+                    const downloadEvent = page.waitForEvent('download');
+                    await page.getByText('[Скачать Фото]').click();
+                    const download = await downloadEvent;
+                    console.log('Файл скачан: фото', download.suggestedFilename());
+                    await download.saveAs(`//FileServer/Shara/Work/Прайсы/Производители_2/${item[1]}/Парсер/${newitem}/Фото/` + download.suggestedFilename());
+                } else {
+                    console.log('Элемент [Скачать Фото] не найден, пропускаем.');
+                }
+            } catch (error) {
+                console.error('Ошибка при скачивании фото:', error);
+            }
+
+            await page.waitForTimeout(randomTimeout);
+
+            // Скачивание инструкции
+            try {
+                page.setDefaultTimeout(120000);
+                if (await page.getByTitle('скачать Инструкцию').isVisible()) {
+                    const downloadEvent = page.waitForEvent('download');
+                    await page.getByText('[Скачать Инструкцию]').click();
+                    const download_2 = await downloadEvent;
+                    console.log('Файл скачан: инструкция', download_2.suggestedFilename());
+                    await download_2.saveAs(`//FileServer/Shara/Work/Прайсы/Производители_2/${newitem1}/Парсер/${newitem}/Паспорт/` + download_2.suggestedFilename());   
+                } else {
+                    console.log('Элемент [Скачать Инструкцию] не найден, пропускаем.');
+                }
+            } catch (error) {
+                console.error('Ошибка при скачивании инструкции:', error);
+            }
+
+            await page.waitForTimeout(randomTimeout);
+
             // Возврат на страницу поиска для следующей итерации
             await page.goto('https://roszdravnadzor.gov.ru/services/misearch');
             await page.waitForTimeout(4030);
-            // В случае ошибки продолжаем со следующим элементом
-            } catch (error) {
+        } catch (error) {
             console.error(`Ошибка при обработке ${item}:`, error);
             await page.goto('https://roszdravnadzor.gov.ru/services/misearch');
-            };
-    };
+        }
+    }
+
     // Закрытие браузера
     await browser.close();
 })();
+// https://www.youtube.com/shorts/6Xow0baG4nI?feature=share
